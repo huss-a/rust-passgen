@@ -1,8 +1,42 @@
 use termcolor::{Color, ColorChoice, ColorSpec, StandardStream, WriteColor};
 pub struct ColorConfig {
-    pub fg: Color,
-    pub is_bold: bool,
-    pub is_dimmed: bool,
+    fg: Color,
+    is_bold: bool,
+    is_dimmed: bool,
+}
+
+impl ColorConfig {
+    pub fn new(color: Color) -> Self {
+        ColorConfig {
+            fg: color,
+            is_bold: false,
+            is_dimmed: false,
+        }
+    }
+
+    pub fn fg(&self) -> Color {
+        self.fg
+    }
+    pub fn is_bold(&self) -> bool {
+        self.is_bold
+    }
+
+    pub fn is_dimmed(&self) -> bool {
+        self.is_dimmed
+    }
+
+    pub fn set_fg(&mut self, val: Color) -> &mut Self {
+        self.fg = val;
+        self
+    }
+    pub fn set_is_bold(&mut self, val: bool) -> &mut Self {
+        self.is_bold = val;
+        self
+    }
+    pub fn set_is_dimmed(&mut self, val: bool) -> &mut Self {
+        self.is_dimmed = val;
+        self
+    }
 }
 
 /// returns a `StandardStream` instance with your `ColorConfig`s
@@ -19,7 +53,7 @@ pub struct ColorConfig {
 ///     is_dimmed: false,
 /// });
 ///
-/// writeln!(&mut stdout, "Hello!!"); // Red and bold output!
+/// writeln!(&mut stdout, "Hello!!").unwrap(); // Red and bold output!
 /// ```
 pub fn std_color(color_config: &ColorConfig) -> StandardStream {
     let mut stdout = StandardStream::stdout(ColorChoice::Always);

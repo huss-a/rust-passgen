@@ -12,7 +12,21 @@ use termcolor::Color;
 pub use utils::stdout_color;
 use utils::stdout_color::*;
 
-pub fn create_pass(length: u32, has_nums: bool, has_symbols: bool, filename: &String) -> String {
+pub struct PassConfig {
+    pub length: u32,
+    pub has_nums: bool,
+    pub has_symbols: bool,
+    pub filename: String,
+}
+
+pub fn create_pass(config: PassConfig) -> String {
+    let PassConfig {
+        length,
+        has_nums,
+        has_symbols,
+        filename,
+    } = config;
+
     let mut chars = ALPHA.to_string();
     if has_nums {
         chars.push_str(NUMS);
@@ -24,7 +38,7 @@ pub fn create_pass(length: u32, has_nums: bool, has_symbols: bool, filename: &St
     gen_pass(length, chars, filename)
 }
 
-fn gen_pass(length: u32, chars: String, filename: &String) -> String {
+fn gen_pass(length: u32, chars: String, filename: String) -> String {
     let mut password = String::new();
 
     for _ in 0..length {
@@ -40,18 +54,62 @@ fn gen_pass(length: u32, chars: String, filename: &String) -> String {
     password
 }
 
-fn save_pass(filename: &String, password: String) {
+fn save_pass(filename: String, password: String) {
+    let mut color_config = ColorConfig::new(Color::Magenta);
+    color_config.set_is_bold(true);
+    let mut stdout = std_color(&color_config);
+
+    if filename != "".to_string() {
+        writeln!(&mut stdout, "Saved password to `{}`!", filename).unwrap();
+    };
+
     match fs::write(filename, password) {
         Ok(()) => (),
         Err(e) => {
-            let mut stdout = std_color(&ColorConfig {
-                fg: Color::Red,
-                is_bold: true,
-                is_dimmed: false,
-            });
-            writeln!(&mut stdout, "Error while writing to file: {}", e);
+            color_config.set_fg(Color::Red);
+            writeln!(&mut stdout, "Error while writing to file: {}", e).unwrap();
 
             std::process::exit(1);
         }
     };
+}
+
+pub fn run(config: Vec<String>) {
+    let (mut has_nums, mut has_symbols, mut length, mut filename) = (true, true, 8, String::new());
+
+    for (index, arg) in config.iter().enumerate() {
+        match &arg[..] {
+            "--no-nums" | "-nn" => {
+                has_nums = false;
+            }
+            "--no-symbols" | "-ns" => {
+                has_symbols = false;
+            }
+            "--out" | "-o" => {
+                filename = config[index + 1].to_string();
+            }
+            "--len" | "-l" => {
+                length = config[index + 1].parse().unwrap();
+            }
+            "--help" | "-h" => {
+                println!("{}", fs::read_to_string("src/help_message.txt").unwrap());
+                std::process::exit(1);
+            }
+            _ => continue,
+        };
+    }
+
+    let mut color_config = ColorConfig::new(Color::Green);
+    color_config.set_is_bold(true);
+    let password = create_pass(PassConfig {
+        length,
+        has_nums,
+        has_symbols,
+        filename,
+    });
+    let mut stdout = std_color(&color_config);
+    writeln!(&mut stdout, "Generated Password:",).unwrap();
+    color_config.set_fg(Color::Blue).set_is_bold(false);
+    let mut stdout = std_color(&color_config);
+    writeln!(&mut stdout, "{}", password).unwrap();
 }
