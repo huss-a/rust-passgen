@@ -1,7 +1,4 @@
-use passgen::{
-    create_pass,
-    std_color::{std_color, ColorConfig},
-};
+use passgen::{create_pass, stdout_color::*};
 use std::{env, fs, io::Write};
 use termcolor::Color;
 
@@ -32,23 +29,23 @@ fn main() {
         };
     }
 
-    let mut stdout_color = ColorConfig {
+    let mut color_config = ColorConfig {
         fg: Color::Green,
         is_bold: true,
         is_dimmed: false,
     };
 
-    let mut stdout = std_color(&stdout_color);
+    let mut stdout = std_color(&color_config);
     writeln!(&mut stdout, "Generated Password:",);
-    stdout_color.fg = Color::Blue;
-    let mut stdout = std_color(&stdout_color);
+    color_config.fg = Color::Blue;
+    let mut stdout = std_color(&color_config);
     writeln!(
         &mut stdout,
         "{}",
         create_pass(length, has_nums, has_symbols, filename)
     );
-    stdout_color.fg = Color::Magenta;
-    let mut stdout = std_color(&stdout_color);
+    color_config.fg = Color::Magenta;
+    let mut stdout = std_color(&color_config);
     if filename != "" {
         writeln!(&mut stdout, "Saved password to `{}`!", filename);
     };

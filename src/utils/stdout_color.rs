@@ -5,7 +5,7 @@ pub struct ColorConfig {
     pub is_dimmed: bool,
 }
 
-/// returns a `StandardStream` instance with you `ColorConfig`s
+/// returns a `StandardStream` instance with your `ColorConfig`s
 ///
 /// ### Example
 /// ```

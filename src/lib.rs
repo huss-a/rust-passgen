@@ -3,13 +3,14 @@ static NUMS: &str = "0123456789";
 static SPECIAL: &str = "!@#$%^&*_-+=";
 
 mod utils {
-    pub mod std_color;
+    pub mod stdout_color;
 }
 
 use rand::Rng;
 use std::{fs, io::Write};
 use termcolor::Color;
-pub use utils::std_color;
+pub use utils::stdout_color;
+use utils::stdout_color::*;
 
 pub fn create_pass(length: u32, has_nums: bool, has_symbols: bool, filename: &String) -> String {
     let mut chars = ALPHA.to_string();
@@ -43,7 +44,7 @@ fn save_pass(filename: &String, password: String) {
     match fs::write(filename, password) {
         Ok(()) => (),
         Err(e) => {
-            let mut stdout = std_color::std_color(&std_color::ColorConfig {
+            let mut stdout = std_color(&ColorConfig {
                 fg: Color::Red,
                 is_bold: true,
                 is_dimmed: false,
