@@ -1,0 +1,7 @@
+passgen [OPTIONS]
+
+OPTIONS:
+    --no-nums | -nn         No numbers
+    --no-symbols | -ns      No symbols
+    --len | -l              Specify password length
+    -h | --help             Display this message
