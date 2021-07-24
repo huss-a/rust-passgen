@@ -4,4 +4,4 @@ OPTIONS:
     --no-nums | -nn         No numbers
     --no-symbols | -ns      No symbols
     --len | -l              Specify password length
-    -h | --hell             Display this message
+    -h | --help             Display this message
