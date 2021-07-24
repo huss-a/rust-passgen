@@ -59,9 +59,9 @@ fn save_pass(filename: Option<String>, password: String) {
     color_config.set_is_bold(true);
     let mut stdout = std_color(&color_config);
 
-    if let Some(name) = filename {
-        writeln!(&mut stdout, "Saved password to `{}`!", name).unwrap();
-        match fs::write(name, password) {
+    if let Some(filename) = filename {
+        writeln!(&mut stdout, "Saved password to `{}`!", filename).unwrap();
+        match fs::write(filename, password) {
             Ok(()) => (),
             Err(e) => {
                 color_config.set_fg(Color::Red);
