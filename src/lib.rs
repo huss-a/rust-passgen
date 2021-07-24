@@ -1,6 +1,6 @@
 static ALPHA: &str = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 static NUMS: &str = "0123456789";
-static SPECIAL: &str = "!@#$%^&*_-+=";
+static SPECIAL: &str = "!@#$%^&*_-+=,.~";
 
 mod utils {
     pub mod stdout_color;
