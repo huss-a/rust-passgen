@@ -1,5 +1,6 @@
 {
     "files.associations": {
-        "Cargo.lock": "toml"
+        "Cargo.lock": "toml",
+        "config": "toml"
     }
 }
