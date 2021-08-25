@@ -24,7 +24,7 @@ fn main() {
             }
             "--help" | "-h" => {
                 println!("{}", help_message);
-                std::process::exit(1);
+                std::process::exit(0);
             }
             _ => continue,
         };
