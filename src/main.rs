@@ -5,8 +5,19 @@ use termcolor::Color;
 
 fn main() {
     let config = env::args().collect::<Vec<String>>();
-    let (mut has_nums, mut has_symbols, mut length, mut filename, help_message) =
-        (true, true, 8, None, include_str!("help_message.txt"));
+    let mut has_nums = true;
+    let mut has_symbols = true;
+    let mut length = 8;
+    let mut filename = None;
+    let help_msg = "passgen [OPTIONS]
+
+    OPTIONS:
+        -nn | --no-nums         No numbers
+        -ns | -no-symbols       No symbols
+        -l 	| --len <len>       Specify password length
+        -h 	| --help            Display this message
+        -o 	| --out <file>	    Save to file
+    ";
 
     for (index, arg) in config.iter().enumerate() {
         match &arg[..] {
@@ -23,7 +34,7 @@ fn main() {
                 length = config[index + 1].parse().unwrap();
             }
             "--help" | "-h" => {
-                println!("{}", help_message);
+                println!("{}", help_msg);
                 std::process::exit(0);
             }
             _ => continue,

@@ -1,8 +1,0 @@
-passgen [OPTIONS]
-
-OPTIONS:
-    -nn | --no-nums         No numbers
-    -ns | -no-symbols       No symbols
-    -l 	| --len <len>       Specify password length
-    -h 	| --help            Display this message
-    -o 	| --out <file>	    Save to file
